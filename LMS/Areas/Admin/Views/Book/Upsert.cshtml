@@ -1,0 +1,132 @@
+﻿@model LMS.Models.ViewModels.BookVM
+@{
+    var title = "Create Book";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <div class="row px-2 mx-2 backgroundWhite border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.Book.Id != 0)
+        {
+            <input type="hidden" asp-for="Book.Id" />
+            title = "Edit Book";
+        }
+
+        <div class="col-12">
+            <h2 class="text-primary">@title</h2>
+            <br />
+        </div>
+        <div class="col-9">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Book.Title"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Book.Title" class="form-control" />
+                    <span asp-validation-for="Book.Title" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Book.CategoryId"></label>
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m=>m.Book.CategoryId, Model.CategoryList,"--Please select a Category",new {@class="form-control"})
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Book.Edition"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Book.Edition" class="form-control" />
+                    <span asp-validation-for="Book.Edition" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Book.Author.Id"></label>
+                </div>
+                <div class="col-8">
+                   @Html.DropDownListFor(m=>m.Book.AuthorId,Model.AuthorList,"--Please select a Author",new {@class="form-control"})
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Book.Price"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Book.Price" id="txtPrice" class="form-control" />
+                    <span asp-validation-for="Book.Price" class="text-danger"></span>
+                </div>
+            </div>
+          
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Book.Quantity"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Book.Quantity" class="form-control" />
+                    <span asp-validation-for="Book.Quantity" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Book.ImageUrl"></label>
+                </div>
+                <div class="col-8">
+                    <input type="file" name="files" id="uploadBox" multiple class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group row my-3">
+                <div class="col-8 offset-4">
+                    @if (Model.Book.Id != 0)
+                    {
+                        //Edit button and back to list
+                        <partial name="_EditAndBackToListButton" model="Model.Book.Id" />
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" onclick="return validateInput()" class="btn btn-primary form-control">Create</button>
+                            </div>
+                            <div class="col">
+                                <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+        @if (Model.Book.Id !=0)
+        {
+            <div class="col-3">
+                <img src="@Model.Book.ImageUrl" width="100%" style="border-radius: 5px; border: 1px solid #bbb9b9"/>
+            </div>
+        }
+    </div>
+
+</form>
+
+@section Scripts{ 
+    <script>
+    fucntion validateInput(){
+    if(document.getElementById("uploadBox").value==""){
+        swal("Error", "Please select an Image", "error")
+        return false;
+            }
+    return true;
+        };
+    $(document).ready(function() {
+        if (document.getElementById('txtPrice').value == "0") {
+            document.getElementById('txtPrice').value = '';
+        }
+    });
+    </script>
+}

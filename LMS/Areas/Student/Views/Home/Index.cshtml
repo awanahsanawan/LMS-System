@@ -1,0 +1,50 @@
+﻿@model LMS.Models.ViewModels.HomeVM
+
+
+<div class="row container pb-3 backgroundWhite">
+    <div class="col-12">
+        <div class="row">
+            <h2 class="text-success"><b>Book List</b></h2>
+
+            <div class="col-12">
+                <div class="row my-3">
+                    <table class="table">
+                        <tr class="d-md-table-row">
+                            <th>Image</th>
+                            <th>Category</th>
+                            <th>Book Title</th>
+                            <th>Author Name</th>
+                            <th>Availabililty</th>
+                            <th>Order</th>
+                        </tr>
+                   
+                        @foreach (var book in Model.BookList)
+                        {
+                            <tr class="d-md-table-row">
+                                <td><img src="@book.ImageUrl" width="100px" height="=100px" /></td>
+                               
+                <td>@book.Category.Name</td>
+                <td>@book.Title</td>
+                <td>@book.Author.Name</td>
+                            @if (@book.Quantity > 0)
+                            {
+                                <td style="color: green;">Available</td>
+                                <td> @Html.ActionLink("Order Now","Details","Home",new {Id=@book.Id})</td>
+                            }
+                            else
+                            {
+                                <td style="color: red;">Not Available</td>
+                                <td><span style="color: gray;">Order Now</span></td>
+
+                            }
+                            </tr>
+              }
+         
+            
+
+                        </table>
+                                    </div>
+                                                </div>
+                                                            </div>
+                                                                        </div>
+                                                                                    </div>
